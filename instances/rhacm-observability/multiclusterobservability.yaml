@@ -1,0 +1,27 @@
+apiVersion: observability.open-cluster-management.io/v1beta2
+kind: MultiClusterObservability
+metadata:
+  name: observability
+  annotations:
+    argocd.argoproj.io/sync-wave: "203"
+    helm.sh/hook-weight: "203"
+spec:
+  enableDownsampling: true
+  imagePullPolicy: Always
+  imagePullSecret: multiclusterhub-operator-pull-secret
+  observabilityAddonSpec:
+    enableMetrics: true
+    interval: 60
+  storageConfig:
+    metricObjectStorage:
+      name: thanos-object-storage
+      key: thanos.yaml
+    storageClass: ocs-storagecluster-ceph-rbd
+  advanced:
+    retentionConfig:
+      blockDuration: 2h
+      deleteDelay: 48h
+      retentionInLocal: 24h
+      retentionResolutionRaw: 5d
+      retentionResolution5m: 14d
+      retentionResolution1h: 30d
